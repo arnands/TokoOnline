@@ -20,15 +20,23 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'role' => '1',
             'status' => 1,
-            'hp' => 't08214433756',
+            'hp' => '08214433756',
             'password' =>bcrypt('p@55word'),
         ]);
         User::factory()->create([
             'nama' => 'arnanda',
             'email' => 'arnanda@gmail.com',
             'role' => '0',
-            'status' => 1,
-            'hp' => 't08214433857',
+            'status' => 0,
+            'hp' => '08214433857',
+            'password' =>bcrypt('p@55word'),
+        ]);
+        User::factory()->create([
+            'nama' => 'arnanda',
+            'email' => 'arnands@gmail.com',
+            'role' => '0',
+            'status' => 0,
+            'hp' => '08214433856',
             'password' =>bcrypt('p@55word'),
         ]);
     }
