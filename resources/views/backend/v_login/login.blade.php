@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html dir="ltr">
-    
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -186,7 +184,6 @@
     </script>
   </body>
 </html>
-=======
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -233,4 +230,3 @@ class="form-control @error('password') is-invalid
 <button type="submit">Login</button>     
 </body>
 </html>
->>>>>>> f562d312fce5e9d4908ef1d0764c2d14b9552ed7
