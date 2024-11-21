@@ -156,43 +156,32 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
+                @if(Auth::user()->foto)
                   <img
-                    src="{{ asset('backend/matrix-admin/assets/images/users/1.jpg') }}"
+                    src="{{ asset('storage/img-user/' . Auth::user()->foto) }}"
                     alt="user"
                     class="rounded-circle"
                     width="31"
                   />
+                  @else
+                  <img
+                    src="{{ asset('storage/img-user/img-default.jpg')}}"
+                    alt="user"
+                    class="rounded-circle"
+                    width="31"
+                  />
+                  @endif
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-end user-dd animated"
                   aria-labelledby="navbarDropdown"
                 >
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-account me-1 ms-1"></i> My Profile</a
-                  >
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-wallet me-1 ms-1"></i> My Balance</a
-                  >
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-email me-1 ms-1"></i> Inbox</a
-                  >
+                  <a class="dropdown-item" href="{{ route('backend.user.edit', Auth::user()->id) }}"
+                    ><i class="mdi mdi-account me-1 ms-1"></i> My Profile</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-settings me-1 ms-1"></i> Account
-                    Setting</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <div class="ps-4 p-10">
-                    <a
-                      href="javascript:void(0)"
-                      class="btn btn-sm btn-success btn-rounded text-white"
-                      >View Profile</a
-                    >
-                  </div>
+                  <a class="dropdown-item" href="" onclick="event.preventDefault(); document.getElementById
+                  ('keluar-app'). submit();"
+                    ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a>
                 </ul>
               </li>
               <!-- ============================================================== -->
@@ -269,7 +258,7 @@
         <!-- ============================================================== -->
         <!-- Bread crumb and right sidebar toggle -->
         <!-- ============================================================== -->
-        <div class="page-breadcrumb">
+        {{-- <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Tables</h4>
@@ -285,7 +274,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
         <!-- ============================================================== -->
         <!-- End Bread crumb and right sidebar toggle -->
         <!-- ============================================================== -->
@@ -300,42 +289,7 @@
           @yield('content')
           {{-- @yieldakhir --}}
 
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Basic Datatable</h5>
-                  <div class="table-responsive">
-                    <table
-                      id="zero_config"
-                      class="table table-striped table-bordered"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Position</th>
-                          <th>Office</th>
-                          <th>Age</th>
-                          <th>Start date</th>
-                          <th>Salary</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>2011/04/25</td>
-                          <td>$320,800</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
           <!-- ============================================================== -->
           <!-- End PAge Content -->
           <!-- ============================================================== -->
@@ -387,11 +341,53 @@
     <script src="{{ asset('backend/matrix-admin/assets/extra-libs/multicheck/datatable-checkbox-init.js')}}"></script>
     <script src="{{ asset('backend/matrix-admin/assets/extra-libs/multicheck/jquery.multicheck.js')}}"></script>
     <script src="{{ asset('backend/matrix-admin/assets/extra-libs/DataTables/datatables.min.js')}}"></script>
+    <script src="{{ asset('backend/plugins/sweetalert2.all.min.js')}}"></script>
     <script>
       /****************************************
        *       Basic Table                   *
        ****************************************/
       $("#zero_config").DataTable();
     </script>
+
+      <form id="keluar-app" action="{{ route('backend.logout') }}" method="POST" class="d-none">
+        @csrf
+      </form>
+
+      @if(session('success'))
+      <script>
+        swal.fire((
+          icon: 'success',
+          title: 'Berhasil',
+          text: "{{ session('success') }}"
+        ))
+      </script>
+      @endif
+      
+      <script type="text/javascript">
+        // Konfirmasi delete
+        $('.show_confirm').click(function(event){
+          var form=$(this).closest("form");
+          var konfdelete=$(this).data("konf-delete");
+          event.preventDefault();
+          Swal.fire({
+            title: 'Konfirmasi Hapus Data?',
+            html: "Data yang dihapus <strong>" + konfdelete + "</strong> tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, dihapus',
+            cancelButtonText: 'Batal',
+          }).then((result)=>{
+            if(result.isConfirmed){
+              Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success')
+                .then(()=>{
+                  form.submit();
+                });
+            }
+          });
+        });
+      </script>
   </body>
+
 </html>
